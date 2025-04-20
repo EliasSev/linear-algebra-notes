@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Markdown Viewer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.css">
+  <style>
+    body { max-width: 800px; margin: 2em auto; font-family: sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="content">Loading...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-texmath/texmath.min.js"></script>
+
+  <script>
+    fetch('test-note.md')
+      .then(res => res.text())
+      .then(md => {
+        const mdIt = window.markdownit({ html: true })
+          .use(texmath, { engine: katex, delimiters: 'dollars' });
+
+        document.getElementById('content').innerHTML = mdIt.render(md);
+      });
+  </script>
+</body>
+</html>
