@@ -1,30 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Linear Algebra Notes</title>
+  <meta charset="UTF-8" />
+  <title>Markdown Viewer with Callouts</title>
+
+  <!-- KaTeX + TexMath Styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.css">
+
   <style>
-    body { max-width: 800px; margin: 2em auto; font-family: sans-serif; }
+    body {
+      max-width: 800px;
+      margin: 2em auto;
+      font-family: sans-serif;
+      padding: 0 1em;
+    }
+
+    /* Callout Box Styles */
+    .callout {
+      border-left: 4px solid #ccc;
+      padding: 1em;
+      margin: 1.5em 0;
+      background-color: #f9f9f9;
+      border-radius: 0.5em;
+    }
+
+    .callout.note    { border-color: #3b82f6; background-color: #eff6ff; }
+    .callout.warning { border-color: #f59e0b; background-color: #fff7ed; }
+    .callout.tip     { border-color: #10b981; background-color: #ecfdf5; }
+    .callout.danger  { border-color: #ef4444; background-color: #fef2f2; }
   </style>
 </head>
 <body>
   <div id="content">Loading...</div>
 
+  <!-- Markdown-It + KaTeX + TexMath -->
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/markdown-it-texmath/texmath.min.js"></script>
 
   <script>
-    fetch('test-note.md')
-      .then(res => res.text())
-      .then(md => {
-        const mdIt = window.markdownit({ html: true })
-          .use(texmath, { engine: katex, delimiters: 'dollars' });
+    const md = window.markdownit({ html: true })
+      .use(texmath, { engine: katex, delimiters: 'dollars' })
+      .use(md => {
+        const defaultRender = md.renderer.rules.blockquote_open || function (tokens, idx, options, env, self) {
+          return self.renderToken(tokens, idx, options);
+        };
 
-        document.getElementById('content').innerHTML = mdIt.render(md);
+        md.renderer.rules.blockquote_open = function (tokens, idx, options, env, self) {
+          const nextToken = tokens[idx + 1];
+          if (nextToken && nextToken.type === 'inline' && nextToken.content.startsWith('[!')) {
+            const type = nextToken.content.match(/^\[\!(\w+)\]/i)?.[1]?.toLowerCase();
+            if (type) {
+              tokens[idx].attrSet('class', `callout ${type}`);
+              nextToken.content = nextToken.content.replace(/^\[\!(\w+)\]\s*/, '');
+            }
+          }
+          return defaultRender(tokens, idx, options, env, self);
+        };
+      });
+
+    // Load your Markdown file
+    fetch('your-note.md')
+      .then(res => res.text())
+      .then(mdText => {
+        const html = md.render(mdText);
+        document.getElementById('content').innerHTML = html;
       });
   </script>
 </body>
 </html>
+
