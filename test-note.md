@@ -1,9 +1,3 @@
-This note contains
-- Ridge regression
-- Ridge regression using the SVD
-- Fast LooCV using Ridge regression
-- Tikhonov regularisation
-
 In linear regression, we considered the problem
 $$
 \min_\beta \|y - X\beta\|^2
