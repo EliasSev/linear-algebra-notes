@@ -54,12 +54,11 @@ X^Ty
 $$
 and hence:
 
->[!Theorem 1 (Ridge regression)]
+>[!NOTE] **Theorem 1** (Ridge regression)
 >Let $X$ be $m\times n$ and $y\in\mathbb R^m$.  Then the least squares solution of $(1)$ is
 >$$
 >\hat\beta = (X^TX + \lambda I)^{-1}X^Ty\quad (2)
 >$$
-
 
 # <span style="color:#295ABB">2. Ridge regression using the SVD</span>
 ---
@@ -80,7 +79,7 @@ $$
 $$
 where $Z_\lambda = QR$. This does give an improvement in terms of speed, but we can do better. We first need the following result.
 
->[!Theorem 2 (Ridge regression using svd)]
+>[!NOTE] **Theorem 2** (Ridge regression using svd)
 >Let $X = U\Sigma V^T$ be the SVD of $X$. Then the least squares solution of $(3)$ is
 >$$
 >\hat\beta = V(\Sigma^T\Sigma + \lambda I_n)^{-1}\Sigma U^Ty \quad (4)
@@ -110,7 +109,7 @@ This establishes the result. $\blacksquare$
 
 The next theorem shows that the least squares solution $\hat\beta$ of $(3)$ is just a linear combination of the columns of $V_r$ (the right singular vectors of $X$).
 
->[!Theorem 3 (Ridge regression and the right singular vectors)]
+>[!NOTE] **Theorem 3** (Ridge regression and the right singular vectors)
 >The least squares solution of $(3)$ is
 >$$
 >\hat\beta = V_rc_\lambda
@@ -143,7 +142,7 @@ c_{\lambda, k} = \frac{u_k^Ty}{\sigma_k^2+\lambda/\sigma_k}
 $$
 where $\sigma_k$ is the $k$th singular value of $X$. The next theorem shows a similar result: the fitted values using the least squares solution are linear combinations of the $r$ first left singular values of $X$.
 
->[!Theorem 4 (Ridge regression and the left singular vectors)]
+>[!NOTE] **Theorem 4** (Ridge regression and the left singular vectors)
 >The fitted values of the least squares solution of $(3)$ is
 >$$
 \hat y = U_rd_\lambda
@@ -170,7 +169,7 @@ where $C_\lambda = (\Sigma_r + \lambda \Sigma_r^{-1})^{-1}U_r^TY$ and $D_\lambda
 ---
 Recall the leave-one-out result, where $(x^{(i)}, y^{(i)})$ be the $i$th fold (sample), and $(X^i, y^i)$ the remaining data
 
->[!Theorem 5 (Fast LooCV)]
+>[!NOTE] **Theorem 5** (Fast LooCV)
 >Let $(X, y)$ be a data set. If $\{(x_i, y_i),\space(X^i, y^i)\}$ is the $i$th fold in a leave-one-out cross-validation and
 >1. $\hat\beta$ is the OLS solution of $X\beta = y$
 >2. $\hat\beta_i$ the OLS solution of $X^i\beta_i = y_i$
@@ -188,7 +187,7 @@ H = UU^T
 $$
 and hence we get the $h_i = u_iu_i^T$, where $u_i$ is the $i$th row of $U$. If we wish to include a constant term to, that is, we add a column of $1$s to $X$, then we get the following result.
 
->[!Theorem 6 (Fast LooCV with constant term)]
+>[!NOTE] **Theorem 6** (Fast LooCV with constant term)]
 >If $X$ is centered and $\text{Col }X = \text{Col }U$, $U$ orthogonal columns, then the $i$th LooCV prediction residual is given by
 >$$
 >r_{(i)}=\frac{r_i}{1-h_i^*}
@@ -223,7 +222,7 @@ y_i - \hat y_{i, -1} = y_i - (y_i - r_{(i)}) = \frac{r_i}{1-h_i^*} = \frac{y_i -
 $$
 which leads to the following definition.
 
->[!PRESS]
+>[!IMPORTANT] **Definition** PRESS
 >Let $\hat y_{i, -1}$ denote the prediction of the $i$th row of $X$ when $x_i$ is left out. The predicted residual sum of squares is
 >$$
 >\text{PRESS} = \sum_{i=1}^m(y_i - \hat y_{i, -1})^2 = \sum_{i=1}^m\frac{(y_i - \hat y_i)^2}{(1 - h_i - 1/m)^2}
@@ -231,7 +230,7 @@ which leads to the following definition.
 
 The values $h = [h_{ii}]$ on the diagonal of $H$ is known as the **leverage**. The following theorem states a fast way of calculating $h$.
 
->[!Theorem (leverage)]
+>[!NOTE] **Theorem 7** (Leverage)
 >The leverage values of $X$ can be found as follows,
 >$$
 >h = (U \odot U){\bf 1}
@@ -278,7 +277,7 @@ $$
 $$
 which we already know how to solve. To summarise:
 
->[!Theorem (Tikhonov regression)]
+>[!NOTE] **Theorem 7** (Tikhonov regression)
 >Let $X$ be $m\times n$, $y\in\mathbb R^m$, $\beta>0$ and $L$ and $n\times n$ invertible matrix. Let $X^\star = XL^{-1}$, then the solution to $(10)$ is given by $\beta^\star = L\beta$ where $\beta^\star$ is the solution of
 >$$
 >\min_{\beta^\star} \|y - X^\star\beta^\star\|^2 +\lambda\|\beta^\star\|^2
@@ -286,7 +285,7 @@ which we already know how to solve. To summarise:
 
 This last theorem shows an inexpensive way of computing the leverages $h_\lambda$ and the $\text{PRESS}(\lambda)$ values of a Ridge regression problem.
 
->[!Theorem (leverage and press for Ridge)]
+>[!NOTE] **Theorem 8** (leverage and press for Ridge)
 >Let $U_r\Sigma_r V_r^T$ be the SVD of $X$ with non-zero singular values $\sigma_1,\dots,\sigma_r$. The leverage $h_\lambda$ and the $\text{PRESS}(\lambda)$ values of the problem $\min_\beta \|y - X\beta\|^2 +\lambda\|\beta\|^2$ is given by
 >$$
 >\begin{aligned}
